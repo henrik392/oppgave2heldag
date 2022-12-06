@@ -1,5 +1,5 @@
-import matplotlib.pyplot as plt
 import csv
+import matplotlib.pyplot as plt
 
 filnavn = 'Befolkning.csv'
 
