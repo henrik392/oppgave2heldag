@@ -1,2 +1,2 @@
 # oppgave2heldag
-Oppgave 2 på IT heldag
+Oppgave 2 på IT heildag
