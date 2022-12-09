@@ -6,7 +6,8 @@ from pathlib import Path
 # Leser 'Befolkning.csv' med ";" som delimiter.
 filnavn = 'Befolkning.csv'
 
-befolkning_data = File(Path(__file__).parent / filnavn, delimiter=";").content
+befolkning_data = File(Path(__file__).parent /
+                       filnavn, delimiter=";").content
 
 # De tre første linjene i filen er overskrifter
 tittel = befolkning_data[0]
@@ -25,9 +26,12 @@ for befolkning_punkt in befolkning_punkter:
     befolkning.append(int(befolkning_punkt[1]))
 
 # Tegner grafen
-plt.plot(aarstall, befolkning)
+plt.plot(aarstall, befolkning, label='Befolkning')
+plt.legend()
 plt.grid()
 plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.title(tittel)
-plt.show()
+
+if __name__ == '__main__':
+    plt.show()
