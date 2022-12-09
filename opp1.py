@@ -1,64 +1,33 @@
-import csv
 import matplotlib.pyplot as plt
+from file_read import File
+from pathlib import Path
 
 
-# jeg må fikse grafen. Akkurat nå må jeg klare å få det mindre crowded
-# mye av koden er bloat som jeg må slette senere
-
+# Leser 'Befolkning.csv' med ";" som delimiter.
 filnavn = 'Befolkning.csv'
+
+befolkning_data = File(Path(__file__).parent / filnavn, delimiter=";").content
+
+# De tre første linjene i filen er overskrifter
+tittel = befolkning_data[0]
+
+xlabel = befolkning_data[2][0]
+ylabel = befolkning_data[2][1]
+
+# Fra fjerde linje finnner vi punkter vi kan plotte
+befolkning_punkter = befolkning_data[3:]
 
 aarstall = []
 befolkning = []
 
-with open(filnavn, encoding="utf-8-sig") as fil:
-    filinnhold = csv.reader(fil, delimiter=";")
-
-    tittel = next(filinnhold)
-    next(filinnhold)
-    overskrift = next(filinnhold)
-
-    felles = []
-    aarstall = []
-    befolkning = []
-    aarstallmindrecrowded = []
-    befolkningmindrecrowded = []
-
-    print(overskrift)
-
-    for rad in filinnhold:
-        felles.append(rad)
-        #print(felles)
-
-
-for i in range(len(felles)):
-    aarstall.append(felles[i][0])
-    befolkning.append(felles[i][1])
-
-for i in range(0, len(aarstall), 5):
-    print(i)
-    aarstallmindrecrowded.append(aarstall[i])
-
-for i in range(0, len(aarstall), 5):
-    print(i)
-    befolkningmindrecrowded.append(befolkning[i])
-
-
-print(len(aarstall))
-
-'''
-aarstallmindrecrowded.append(int(aarstall[i]) + int(aarstall[i+1]) + int(aarstall[i+2]) + int(aarstall[i+3]) + int(aarstall[i+4]) + int(aarstall[i+5]) / 6)
-
-befolkningmindrecrowded.append(int(befolkning[i]) + int(befolkning[i+1]) + int(befolkning[i+2]) + int(befolkning[i+3]) + int(befolkning[i+4]) + int(befolkning[i+5]) / 6)
-'''
-
-
-plt.subplots(figsize=(36,20), dpi=50)
+for befolkning_punkt in befolkning_punkter:
+    aarstall.append(int(befolkning_punkt[0]))
+    befolkning.append(int(befolkning_punkt[1]))
 
 # Tegner grafen
-plt.plot(aarstallmindrecrowded, befolkningmindrecrowded)
-#plt.plot(aarstall, befolkning)
+plt.plot(aarstall, befolkning)
 plt.grid()
-plt.xlabel(overskrift[0])
-plt.ylabel(overskrift[1])
+plt.xlabel(xlabel)
+plt.ylabel(ylabel)
 plt.title(tittel)
 plt.show()
