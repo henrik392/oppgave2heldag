@@ -13,7 +13,7 @@ befolkning = []
 with open(filnavn, encoding="utf-8-sig") as fil:
     filinnhold = csv.reader(fil, delimiter=";")
 
-    next(filinnhold)
+    tittel = next(filinnhold)
     next(filinnhold)
     overskrift = next(filinnhold)
 
@@ -34,11 +34,11 @@ for i in range(len(felles)):
     aarstall.append(felles[i][0])
     befolkning.append(felles[i][1])
 
-for i in range(0, len(aarstall), 20):
+for i in range(0, len(aarstall), 5):
     print(i)
     aarstallmindrecrowded.append(aarstall[i])
 
-for i in range(0, len(aarstall), 20):
+for i in range(0, len(aarstall), 5):
     print(i)
     befolkningmindrecrowded.append(befolkning[i])
 
@@ -52,11 +52,13 @@ befolkningmindrecrowded.append(int(befolkning[i]) + int(befolkning[i+1]) + int(b
 '''
 
 
-
+plt.subplots(figsize=(36,20), dpi=50)
 
 # Tegner grafen
 plt.plot(aarstallmindrecrowded, befolkningmindrecrowded)
+#plt.plot(aarstall, befolkning)
 plt.grid()
 plt.xlabel(overskrift[0])
 plt.ylabel(overskrift[1])
+plt.title(tittel)
 plt.show()
