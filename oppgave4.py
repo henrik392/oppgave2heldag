@@ -1,51 +1,48 @@
 import matplotlib.pyplot as plt
 from file_read import File
 from pathlib import Path
-import numpy as np
 
 
+def data_and_title_from_line(line):
+    title = line[0]
+    data = [(int(value) if value.isnumeric() else 0) for value in line[1:]]
+    return title, data
+
+
+# Leser 'Skilsmisser og ekteskap.csv' med ";" som delimiter.
 filnavn = 'Skilsmisser og ekteskap.csv'
 
-skilsmisserEkteskap_data = File(Path(__file__).parent / filnavn, delimiter=";").content
-
-tittel = skilsmisserEkteskap_data[0]
-
-xlabel = skilsmisserEkteskap_data[3][0]
-ylabel = skilsmisserEkteskap_data[4][0]
+skilsmisser_og_ekteskap_data = File(Path(__file__).parent /
+                                    filnavn, delimiter=";").content
 
 
-ektespap = []
-skilsmisser = []
+# Den første linjen i filen er tittelen
+tittel = skilsmisser_og_ekteskap_data[0]
+
+# Årstall fra data og bruker det som x_verdier
+_, x_initial = data_and_title_from_line(
+    skilsmisser_og_ekteskap_data[2])
+
+# Dataen starter på linje 4
+data_start_index = 3
+bar_width = 4
+
+# Vi går gjennom alle linjer fra fjerde linje og får tittel og data og plotter det med x_width margin mellom dem
+for i in range(data_start_index, len(skilsmisser_og_ekteskap_data)):
+    subtitle, data = data_and_title_from_line(
+        skilsmisser_og_ekteskap_data[i])
+    x_list = [(x+bar_width*(i-data_start_index))
+              for x in x_initial]
+    plt.bar(x_list, data, label=subtitle, width=bar_width)
 
 
-print(xlabel)
-print(ylabel)
+xlabel = "År"
+ylabel = "Inngåtte ekteskap og skilsmisser"
 
+plt.legend()
+plt.xlabel(xlabel)
+plt.ylabel(ylabel)
+plt.title(tittel)
 
-
-aarene_punkter = skilsmisserEkteskap_data[2]
-ekteskap_punkter = skilsmisserEkteskap_data[3]
-skilsmisser_punkter = skilsmisserEkteskap_data[4]
-
-aarene_punkter.pop(0)
-ekteskap_punkter.pop(0)
-skilsmisser_punkter.pop(0)
-
-
-print(aarene_punkter)
-print(ekteskap_punkter)
-print(skilsmisser_punkter)
-
-# plt.clf()
-
-# plt.bar(x, menn, label='Menn')
-# plt.bar(x, kvinner, label='Kvinner')
-# plt.legend()
-
-# plt.title('Gjennomsnittelig månedslønn etter kjønn og år')
-
-# plt.show()
-
-
-# fig, axes = plt.subplots(1, 2, figsize=(
-#     10, 5), sharey=True)
+if __name__ == '__main__':
+    plt.show()
